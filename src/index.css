@@ -82,6 +82,16 @@ svg {
   border: none;
   cursor: pointer;
   transition: all 0.2s;
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 .start-game-btn:hover {
@@ -95,7 +105,7 @@ svg {
 
 .game-container h1 {
   text-align: center;
-  padding: 1.5em 0 2em;
+  padding: 1.5em 0 1.2em;
   font-size: 3rem;
   font-weight: 800;
 }
@@ -109,15 +119,20 @@ svg {
   display: flex;
   justify-content: center;
   margin-bottom: 1em;
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .player {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: #ffc3d3;
   box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
-  padding: 8em;
+  padding: 8em 0em;
+  width: 400px;
 }
 
 .player-active {
@@ -135,25 +150,50 @@ svg {
   gap: 2em;
 }
 
+.player-total-points {
+  color: #ff0e7c;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
 .current-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #ff0e7c;
-  padding: 2em 1em;
+  padding: 1em 0.5em;
   color: #fff;
-  border-radius: 4px;
+  border-radius: 20px;
+}
+
+.player-current-points {
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
 .die {
   margin: 0 auto;
-  width: 80px;
+  width: 90px;
+  box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
 }
 
 .player-btn-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
+  justify-content: center;
+  gap: 4em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dice-action-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  padding-top: 4em;
 }
 
 .roll-dice-btn,
@@ -161,21 +201,28 @@ svg {
 .reset-btn {
   margin: 0 auto;
   display: block;
-  color: #fff;
+  color: #222;
   font-size: 0.8rem;
   font-weight: 800;
-  background-color: #ff0e7c;
-  padding: 1em 1.8em;
-  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
   border: none;
+  padding: 1em;
+  border-radius: 20px;
+  width: 90px;
   cursor: pointer;
   transition: all 0.2s;
+  box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
 }
 
 .roll-dice-btn:hover,
 .hold-btn:hover,
 .reset-btn:hover {
   background-color: #e50c6b;
+  color: #fff;
+}
+
+.flying-pig {
+  width: 70%;
 }
 
 /* Media queries */
@@ -190,8 +237,27 @@ svg {
     font-size: 2.3rem;
   }
 
-  .player {
-    padding: 2em;
+  .player-container {
     margin: 0 0.5em;
+  }
+
+  .player-btn-container {
+    gap: 5.5em;
+  }
+
+  .die {
+    width: 50px;
+  }
+}
+
+@media (min-width: 375px) {
+  .dice-action-container {
+    padding-top: 2.2em;
+  }
+}
+
+@media (min-width: 768px) {
+  .dice-action-container {
+    padding-top: 0;
   }
 }

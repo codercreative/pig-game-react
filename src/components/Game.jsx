@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Game() {
-  const { player1Total, setPlayer1Total } = useState(0);
-  const { player2Total, setPlayer2Total } = useState(0);
-  const { player1Points, setPlayer1Points } = useState(0);
-  const { player2Points, setPlayer2Points } = useState(0);
+  const [player1Total, setPlayer1Total] = useState(0);
+  const [player2Total, setPlayer2Total] = useState(0);
+  const [player1Points, setPlayer1Points] = useState(0);
+  const [player2Points, setPlayer2Points] = useState(0);
 
   // Title state
   const [title, setTitle] = useState("The game is on!");
 
-  setTimeout(() => {
-    setTitle("The game is on!");
-
-    setTimeout(() => {
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
       setTitle("Oink!");
+
+      setTimeout(() => {
+        setTitle("The game is on!");
+      }, 2000);
     }, 2000);
-  }, 2000);
+    return () => clearTimeout(timeoutId);
+  }, [setTitle]);
 
   return (
     <main className="game-container">
@@ -27,10 +30,10 @@ export default function Game() {
         <section className="player player-active">
           <h2>Player 1</h2>
           <div className="player-points-container">
-            <p>{player1Total}</p>
+            <p className="player-total-points">{player1Total}</p>
             <div className="current-container">
               <h3>Current </h3>
-              <p>{player1Points}</p>
+              <p className="player-current-points">{player1Points}</p>
             </div>
           </div>
         </section>
@@ -38,23 +41,29 @@ export default function Game() {
         <div className="player-btn-container">
           <button className="reset-btn">Reset Game</button>
           <img className="die" src="assets/dice-6.png" alt="Playing dice" />
-          <button className="roll-dice-btn">Roll Dice</button>
-          <button className="hold-btn">Hold </button>
+          <div className="dice-action-container">
+            <button className="roll-dice-btn">Roll Dice</button>
+            <button className="hold-btn">Hold </button>
+          </div>
         </div>
 
-        <section className="player player-not-active">
+        <section className="player">
           <h2>Player 2</h2>
           <div className="player-points-container">
-            <p>{player2Total}</p>
+            <p className="player-total-points">{player2Total}</p>
             <div className="current-container">
               <h3>Current </h3>
-              <p>{player2Points}</p>
+              <p className="player-current-points">{player2Points}</p>
             </div>
           </div>
         </section>
       </section>
 
-      <img src="assets/flying-pig.png" alt="Flying pig illustration" />
+      <img
+        src="assets/flying-pig.png"
+        className="flying-pig"
+        alt="Flying pig illustration"
+      />
     </main>
   );
 }
