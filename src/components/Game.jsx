@@ -7,9 +7,7 @@ export default function Game() {
   const [player2Points, setPlayer2Points] = useState(0);
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [diceRoll, setDiceRoll] = useState(false);
-  const [isDieVisible, setIsDieVisible] = useState(false);
   const [winner, setWinner] = useState(false);
-  // const [isPigFlying, setIsPigFlying] = useState(false);
 
   // Title state -- using time out to alternate title between "The game is on!" and "Oink!"
   const [title, setTitle] = useState("The game is on!");
@@ -42,7 +40,6 @@ export default function Game() {
 
     const randomRoll = Math.floor(Math.random() * 6) + 1;
     setDiceRoll(randomRoll);
-    setIsDieVisible(true);
     if (randomRoll === 1) {
       setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
       setPlayer1Points(0);
@@ -69,6 +66,18 @@ export default function Game() {
     }
   };
 
+  // Reset game
+  const resetGame = () => {
+    setPlayer1Total(0);
+    setPlayer2Total(0);
+    setPlayer1Points(0);
+    setPlayer2Points(0);
+    setCurrentPlayer(1);
+    setWinner(false);
+    setTitle("The game is on!");
+    setDiceRoll(false);
+  };
+
   return (
     <main className="game-container">
       <h1 className={`game-title ${title === "Oink!" ? "pink-text" : ""}`}>
@@ -77,9 +86,17 @@ export default function Game() {
 
       <section className="player-container">
         <section
-          className={`player ${currentPlayer === 1 ? "player-active" : ""}`}
+          className={`player ${
+            currentPlayer === 1 && !winner ? "player-active" : ""
+          } ${winner && player1Total >= 20 ? "player-winner" : ""}`}
         >
-          <h2>Player 1</h2>
+          <h2
+            className={
+              winner && player1Total >= 20 ? "player-winner-title" : ""
+            }
+          >
+            Player 1
+          </h2>
           <div className="player-points-container">
             <p className="player-total-points">{player1Total}</p>
             <div className="current-container">
@@ -90,14 +107,15 @@ export default function Game() {
         </section>
 
         <div className="player-btn-container">
-          <button className="reset-btn">Reset Game</button>
-          {isDieVisible && (
-            <img
-              className="die"
-              src={`assets/dice-${diceRoll}.png`}
-              alt="Playing dice"
-            />
-          )}
+          <button className="reset-btn" onClick={resetGame}>
+            Reset Game
+          </button>
+
+          <img
+            className={`die ${diceRoll ? "" : "hidden"}`}
+            src={`assets/dice-${diceRoll}.png`}
+            alt="Playing dice"
+          />
 
           <div className="dice-action-container">
             <button
@@ -114,9 +132,17 @@ export default function Game() {
         </div>
 
         <section
-          className={`player ${currentPlayer === 2 ? "player-active" : ""}`}
+          className={`player ${
+            currentPlayer === 2 && !winner ? "player-active" : ""
+          } ${winner && player2Total >= 20 ? "player-winner" : ""}`}
         >
-          <h2>Player 2</h2>
+          <h2
+            className={
+              winner && player2Total >= 20 ? "player-winner-title" : ""
+            }
+          >
+            Player 2
+          </h2>
           <div className="player-points-container">
             <p className="player-total-points">{player2Total}</p>
             <div className="current-container">
