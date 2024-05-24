@@ -8,8 +8,9 @@
 - [My process](#my-process)
   - [Built with](#built-with)
   - [What I learned and reminders](#what-i-learned-and-reminders)
+    - [Start component](#start-component)
+    - [Game component](#game-component)
   - [Enhancement considerations](#enhancement-considerations)
-  - [Useful resources](#useful-resources)
 
 ## Overview
 
@@ -35,11 +36,11 @@ The Pig game is a simple dice game where players take turns rolling a single die
 
 ### What I learned and reminders
 
-I used useEffect to ensure that the setTimeout is only called once after the component mounts, and is properly cleaned up when the component unmounts or when the dependencies change. If I use setTimeout directly in the functional component body, it might cause unexpected behavior because setTimeout will be re-executed on each render.
+#### Start component
 
 Remember to call the click event within the StartPage component:
 
-```js
+```jsx
 export default function StartPage({ onStartClick })
 // ...
   <h2>Are you ready to roll?</h2>
@@ -49,7 +50,7 @@ export default function StartPage({ onStartClick })
 
 And here's what it looks like in the App.jsx component:
 
-```js
+```jsx
 export default function App() {
   const [gameStarted, setGameStarted] = useState(false);
 
@@ -65,9 +66,49 @@ export default function App() {
 }
 ```
 
+#### Game component
+
+useEffect is a hook in React that allows you to perform side effects in function components. Side effects are actions that occur outside the primary flow of the application, such as data fetching, DOM manipulation, or setting timers.
+
+I used useEffect to ensure that the setTimeout is only called once after the component mounts, and is properly cleaned up when the component unmounts or when the dependencies change. If I use setTimeout directly in the functional component body, it might cause unexpected behavior because setTimeout will be re-executed on each render.
+
+Arrow function that generates a dice roll when called. It updates the Dice Roll state with a randomRoll. It makes the dice visible and it updates the current player's points. Also, within this function, it is important to include what happens when the current player rolls a 1.
+
+```jsx
+const rollDice = () => {
+  const randomRoll = Math.floor(Math.random() * 6) + 1;
+  setDiceRoll(randomRoll);
+  setIsDieVisible(true);
+  if (randomRoll === 1) {
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
+    setPlayer1Points(0);
+    setPlayer2Points(0);
+  } else if (currentPlayer === 1) {
+    setPlayer1Points((prevPoints) => prevPoints + randomRoll);
+  } else {
+    setPlayer2Points((prevPoints) => prevPoints + randomRoll);
+  }
+};
+```
+
+Code snippet of the reset game button. The die becomes visible when the currentPlayer clicks on the "Roll Dice" button. The page starts out with an invisible die. The die does not appear until the current player clicks on the "Roll Dice" button.
+
+```jsx
+<div className="player-btn-container">
+  <button className="reset-btn">Reset Game</button>
+  {isDieVisible && (
+    <img
+      className="die"
+      src={`assets/dice-${diceRoll}.png`}
+      alt="Playing dice"
+    />
+  )}
+
+```
+
 Remember to add a semi-colon after the quotation mark entity:
 
-```js
+```jsx
 <p>Click &#x0022;Start Game&#x0022; to test your luck.</p>
 ```
 
@@ -100,8 +141,4 @@ Change the title to reflect when the game is over.
 
 Place buttons below the player sections on smaller screens to make the layout more accessible.
 
-Still some general CSS touch-ups needed.
-
-### Useful resources
-
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
+Still some general CSS touch-ups needed. For example: Need to make the game buttons' placement static regardless of whether the die is visible or not.
