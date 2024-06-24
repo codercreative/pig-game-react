@@ -191,7 +191,7 @@ p {
   margin: 0 auto;
   height: 90px;
   width: 90px;
-  box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   object-fit: contain;
 }
 
@@ -291,5 +291,8 @@ p {
 @media (min-width: 768px) {
   .dice-action-container {
     padding-top: 0;
+  }
+  .die {
+    box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
   }
 }
